@@ -2,15 +2,21 @@
 const Stack = require('./stack');
 
 function peek(stack) {
-  if (!stack.top) {
-    return null;
+  let node = stack.top;
+  if (node) {
+    return node.data;
+  } else {
+    console.log('Stack Empty');
+    return false;
   }
-  return stack.top;
 }
 function display(stack) {
   console.log(JSON.stringify(stack));
 }
 
+function isStackEmpty(s) {
+  return s.top === null;
+}
 // const starTrek = new Stack();
 // starTrek.push('Kirk');
 // starTrek.push('Spock');
@@ -76,3 +82,32 @@ function matchParantheses(s) {
 // console.log(matchParantheses('(())'));
 // console.log(matchParantheses('(()'));
 // console.log(matchParantheses('())'));
+
+function sortStack(stack) {
+  const stack2 = new Stack();
+  //console.log(isStackEmpty(stack));
+  while (!isStackEmpty(stack)) {
+    let iteration = stack.pop();
+
+    while (!isStackEmpty(stack2) && (iteration < peek(stack2))) {
+      stack.push(stack2.pop());
+    }
+
+    stack2.push(iteration);
+  }
+
+  while (!isStackEmpty(stack2)) {
+    stack.push(stack2.pop());
+  }
+  return stack;
+}
+
+function testSort() {
+  let stack = new Stack();
+  for (let i = 0; i < 10; i++) {
+    stack.push(Math.floor(Math.random() * 100));
+  }
+  sortStack(stack);
+  display(stack);
+}
+testSort();
